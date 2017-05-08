@@ -1,0 +1,29 @@
+{
+  "name": "cycle-socket.io-server",
+  "version": "0.0.1",
+  "description": "An cycle.js driver for socket.io server",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrpierrot/cycle-socket.io-server.git"
+  },
+  "keywords": [
+    "cycle.js",
+    "socket.io",
+    "driver"
+  ],
+  "dependencies":{
+    "socket.io": "^1.7.3",
+    "@cycle/run": "^3.0.0",
+    "xstream": "^10.7.0"
+  },
+  "author": "Pierre Chabiland",
+  "license": "Beerware",
+  "bugs": {
+    "url": "https://github.com/mrpierrot/cycle-socket.io-server/issues"
+  },
+  "homepage": "https://github.com/mrpierrot/cycle-socket.io-server#readme"
+}
