@@ -1,8 +1,8 @@
 const xs = require('xstream').default;
-const {adapt} = require('@cycle/run/lib/adapt');
+const { adapt } = require('@cycle/run/lib/adapt');
 
 
-function createEventSocketProducer(socket,eventName){
+function createSocketEventProducer(socket, eventName) {
     let eventListener = null;
     return {
         start(listener) {
@@ -13,7 +13,23 @@ function createEventSocketProducer(socket,eventName){
             socket.on(eventName, eventListener);
         },
         stop() {
-            socket.removeListener(eventName,eventListener)
+            socket.removeListener(eventName, eventListener)
+        }
+    }
+}
+
+function createServerEventProducer(io, eventName) {
+    let eventListener = null;
+    return {
+        start(listener) {
+            eventListener = (socket) => {
+                listener.next(SocketWrapper(socket));
+            }
+            io.on(eventName, eventListener);
+        },
+
+        stop() {
+            io.removeListener(eventName, eventListener)
         }
     }
 }
@@ -23,7 +39,7 @@ function SocketWrapper(socket) {
     return {
         _original: socket,
         events(eventName) {
-            return adapt(xs.create(createEventSocketProducer(socket,eventName)))
+            return adapt(xs.create(createSocketEventProducer(socket, eventName)))
         }
     }
 }
@@ -34,27 +50,14 @@ exports.makeSocketIOServerDriver = function makeSocketIOServerDriver(io) {
 
         events$.addListener({
             next: outgoing => {
-                outgoing.socket._original.emit(outgoing.name,outgoing.data);
+                outgoing.socket._original.emit(outgoing.name, outgoing.data);
             },
             error: () => { },
             complete: () => { },
         });
 
         function connect() {
-
-            return adapt(xs.create({
-                start(listener) {
-                    io.on('connection', (socket) => {
-
-                        listener.next(SocketWrapper(socket));
-                    });
-                },
-
-                stop() {
-
-                }
-            }));
-
+            return adapt(xs.create(createServerEventProducer(io, 'connection')));
         }
 
         return {
