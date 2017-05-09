@@ -4,7 +4,13 @@ cycle-socket.io-server is a [socket.io](https://socket.io/) server driver for [c
 
 ## Installation 
 
-Coming soon
+`npm i cycle-socket.io-server --save`
+
+## Import 
+
+```javascript
+    const { makeSocketIOServerDriver } = require('cycle-socket.io-server');
+```
 
 ## Use
 
