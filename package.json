@@ -1,6 +1,6 @@
 {
   "name": "cycle-socket.io-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An cycle.js driver for socket.io server",
   "main": "src/index.js",
   "scripts": {
