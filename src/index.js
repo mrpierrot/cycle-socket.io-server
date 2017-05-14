@@ -50,7 +50,12 @@ exports.makeSocketIOServerDriver = function makeSocketIOServerDriver(io) {
 
         events$.addListener({
             next: outgoing => {
-                outgoing.socket._original.emit(outgoing.name, outgoing.data);
+                if(outgoing.socket){
+                     outgoing.socket._original.emit(outgoing.name, outgoing.data);
+                }else{
+                    io.emit(outgoing.name, outgoing.data);
+                }
+               
             },
             error: () => { },
             complete: () => { },
